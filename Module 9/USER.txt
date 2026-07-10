@@ -1,0 +1,112 @@
+#include <iostream>
+using namespace std;
+
+// Base class
+class User
+{
+protected:
+    string username;
+
+public:
+    User(string name)
+    {
+        username = name;
+    }
+
+    virtual void accessLevel()
+    {
+        cout << "General user access" << endl;
+    }
+};
+
+
+// Derived class: Employee
+class Employee : public User
+{
+public:
+    Employee(string name) : User(name)
+    {
+    }
+
+    void accessLevel() override
+    {
+        cout << username << " (Employee)" << endl;
+        cout << "Permission: View inventory" << endl;
+    }
+};
+
+
+// Derived class: Manager
+class Manager : public User
+{
+public:
+    Manager(string name) : User(name)
+    {
+    }
+
+    void accessLevel() override
+    {
+        cout << username << " (Manager)" << endl;
+        cout << "Permission: View and update inventory" << endl;
+    }
+};
+
+
+// Derived class: Admin
+class Admin : public User
+{
+public:
+    Admin(string name) : User(name)
+    {
+    }
+
+    void accessLevel() override
+    {
+        cout << username << " (Administrator)" << endl;
+        cout << "Permission: Full access - add, update, delete inventory" << endl;
+    }
+};
+
+
+int main()
+{
+    Employee employee("John");
+    Manager manager("Sarah");
+    Admin admin("Alex");
+
+
+    cout << "Inventory System Access Levels\n";
+    cout << "=============================\n\n";
+
+
+    employee.accessLevel();
+
+    cout << endl;
+
+    manager.accessLevel();
+
+    cout << endl;
+
+    admin.accessLevel();
+
+
+    return 0;
+}
+
+//OUTPUT
+
+Inventory System Access Levels
+=============================
+
+John (Employee)
+Permission: View inventory
+
+Sarah (Manager)
+Permission: View and update inventory
+
+Alex (Administrator)
+Permission: Full access - add, update, delete inventory
+
+C:\Users\imomt\source\repos\USER\x64\Debug\USER.exe (process 55780) exited with code 0 (0x0).
+Press any key to close this window . . .
+

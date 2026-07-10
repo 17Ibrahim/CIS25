@@ -1,0 +1,169 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+// Class representing one World Cup match
+class Match
+{
+public:
+    int matchID;
+    string date;
+    string team1;
+    string team2;
+    int score1;
+    int score2;
+    string winner;
+
+    void display()
+    {
+        cout << "Match ID: " << matchID << endl;
+        cout << "Date: " << date << endl;
+        cout << "Teams: " << team1 << " vs " << team2 << endl;
+        cout << "Score: " << score1 << " - " << score2 << endl;
+        cout << "Winner: " << winner << endl;
+        cout << "-----------------------------" << endl;
+    }
+};
+
+int main()
+{
+    ifstream file("matches.csv");
+
+    if (!file)
+    {
+        cout << "Error opening matches.csv" << endl;
+        return 1;
+    }
+
+    vector<Match> matches;
+
+    string line;
+
+    // Skip the header row
+    getline(file, line);
+
+    // Read first 10 matches
+    while (getline(file, line) && matches.size() < 10)
+    {
+        stringstream ss(line);
+        Match m;
+        string temp;
+
+        // match_id
+        getline(ss, temp, ',');
+        m.matchID = stoi(temp);
+
+        // date
+        getline(ss, m.date, ',');
+
+        // stage (skip)
+        getline(ss, temp, ',');
+
+        // group (skip)
+        getline(ss, temp, ',');
+
+        // team_1
+        getline(ss, m.team1, ',');
+
+        // team_2
+        getline(ss, m.team2, ',');
+
+        // score_1
+        getline(ss, temp, ',');
+        m.score1 = stoi(temp);
+
+        // score_2
+        getline(ss, temp, ',');
+        m.score2 = stoi(temp);
+
+        // winner
+        getline(ss, m.winner, ',');
+
+        matches.push_back(m);
+    }
+
+    file.close();
+
+    cout << "2026 FIFA World Cup Matches\n";
+    cout << "===========================\n\n";
+
+    for (Match m : matches)
+    {
+        m.display();
+    }
+
+    return 0;
+}
+
+
+
+// OUTPUT
+
+2026 FIFA World Cup Matches
+===========================
+
+Match ID: 1
+Date: 2026-06-11
+Teams: Mexico vs South Africa
+Score: 2 - 0
+Winner: Mexico
+-----------------------------
+Match ID: 2
+Date: 2026-06-11
+Teams: South Korea vs Czechia
+Score: 2 - 1
+Winner: South Korea
+-----------------------------
+Match ID: 3
+Date: 2026-06-12
+Teams: Canada vs Bosnia and Herzegovina
+Score: 1 - 1
+Winner: Draw
+-----------------------------
+Match ID: 4
+Date: 2026-06-12
+Teams: United States vs Paraguay
+Score: 4 - 1
+Winner: United States
+-----------------------------
+Match ID: 5
+Date: 2026-06-13
+Teams: Switzerland vs Qatar
+Score: 1 - 1
+Winner: Draw
+-----------------------------
+Match ID: 6
+Date: 2026-06-13
+Teams: Brazil vs Morocco
+Score: 1 - 1
+Winner: Draw
+-----------------------------
+Match ID: 7
+Date: 2026-06-13
+Teams: Scotland vs Haiti
+Score: 1 - 0
+Winner: Scotland
+-----------------------------
+Match ID: 8
+Date: 2026-06-13
+Teams: Australia vs Turkiye
+Score: 2 - 0
+Winner: Australia
+-----------------------------
+Match ID: 9
+Date: 2026-06-14
+Teams: Germany vs Curacao
+Score: 7 - 1
+Winner: Germany
+-----------------------------
+Match ID: 10
+Date: 2026-06-14
+Teams: Ivory Coast vs Ecuador
+Score: 1 - 0
+Winner: Ivory Coast
+-----------------------------
+
+C:\Users\imomt\source\repos\Fifa\Debug\Fifa.exe (process 32168) exited with code 0 (0x0).
+Press any key to close this window . . .

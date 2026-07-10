@@ -1,0 +1,430 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+
+// Struct to store patient information
+struct Patient
+{
+    int id;
+    string name;
+    int age;
+    string gender;
+    string diagnosis;
+};
+
+
+// Binary Search function
+int binarySearch(Patient* patients, int count, int searchID)
+{
+    int left = 0;
+    int right = count - 1;
+
+    while (left <= right)
+    {
+        int mid = (left + right) / 2;
+
+        if (patients[mid].id == searchID)
+        {
+            return mid;
+        }
+
+        if (patients[mid].id < searchID)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+
+// Add patient
+void addPatient(Patient* patients, int& count)
+{
+    cout << "\nEnter Patient ID: ";
+    cin >> patients[count].id;
+
+    cin.ignore();
+
+    cout << "Enter Name: ";
+    getline(cin, patients[count].name);
+
+    cout << "Enter Age: ";
+    cin >> patients[count].age;
+
+    cin.ignore();
+
+    cout << "Enter Gender: ";
+    getline(cin, patients[count].gender);
+
+    cout << "Enter Diagnosis: ";
+    getline(cin, patients[count].diagnosis);
+
+
+    count++;
+
+    cout << "\nPatient added successfully!\n";
+}
+
+
+// Display patients
+void displayPatients(Patient* patients, int count)
+{
+    if (count == 0)
+    {
+        cout << "\nNo patients found.\n";
+        return;
+    }
+
+
+    cout << "\nPatient Records\n";
+    cout << "====================\n";
+
+
+    for (int i = 0; i < count; i++)
+    {
+        cout << "ID: " << patients[i].id << endl;
+        cout << "Name: " << patients[i].name << endl;
+        cout << "Age: " << patients[i].age << endl;
+        cout << "Gender: " << patients[i].gender << endl;
+        cout << "Diagnosis: " << patients[i].diagnosis << endl;
+        cout << "--------------------\n";
+    }
+}
+
+
+// Search patient
+void searchPatient(Patient* patients, int count)
+{
+    int id;
+
+    cout << "\nEnter patient ID to search: ";
+    cin >> id;
+
+
+    int result = binarySearch(patients, count, id);
+
+
+    if (result != -1)
+    {
+        cout << "\nPatient Found\n";
+        cout << "Name: " << patients[result].name << endl;
+        cout << "Age: " << patients[result].age << endl;
+        cout << "Diagnosis: " << patients[result].diagnosis << endl;
+    }
+    else
+    {
+        cout << "\nPatient not found.\n";
+    }
+}
+
+
+// Update patient
+void updatePatient(Patient* patients, int count)
+{
+    int id;
+
+    cout << "\nEnter patient ID to update: ";
+    cin >> id;
+
+
+    int result = binarySearch(patients, count, id);
+
+
+    if (result != -1)
+    {
+        cin.ignore();
+
+        cout << "Enter new diagnosis: ";
+        getline(cin, patients[result].diagnosis);
+
+        cout << "Patient updated successfully!\n";
+    }
+    else
+    {
+        cout << "Patient not found.\n";
+    }
+}
+
+
+// Save patients to file
+void savePatients(Patient* patients, int count)
+{
+    ofstream file("patients.txt");
+
+
+    for (int i = 0; i < count; i++)
+    {
+        file << patients[i].id << " "
+            << patients[i].name << " "
+            << patients[i].age << " "
+            << patients[i].gender << " "
+            << patients[i].diagnosis << endl;
+    }
+
+
+    file.close();
+
+    cout << "Patients saved to file.\n";
+}
+
+
+// Load patients from file
+void loadPatients(Patient* patients, int& count)
+{
+    ifstream file("patients.txt");
+
+
+    if (!file)
+    {
+        return;
+    }
+
+
+    while (file >> patients[count].id
+        >> patients[count].name
+        >> patients[count].age
+        >> patients[count].gender
+        >> patients[count].diagnosis)
+    {
+        count++;
+    }
+
+
+    file.close();
+}
+
+
+
+int main()
+{
+    // Dynamic array using pointer
+    Patient* patients = new Patient[100];
+
+
+    int count = 0;
+
+
+    // Load previous patients
+    loadPatients(patients, count);
+
+
+    int choice;
+
+
+    do
+    {
+        cout << "\nHospital Patient System\n";
+        cout << "========================\n";
+        cout << "1. Add Patient\n";
+        cout << "2. Display Patients\n";
+        cout << "3. Search Patient\n";
+        cout << "4. Update Patient\n";
+        cout << "5. Save Patients\n";
+        cout << "6. Exit\n";
+
+        cout << "\nEnter choice: ";
+        cin >> choice;
+
+
+        switch (choice)
+        {
+        case 1:
+            addPatient(patients, count);
+            break;
+
+        case 2:
+            displayPatients(patients, count);
+            break;
+
+        case 3:
+            searchPatient(patients, count);
+            break;
+
+        case 4:
+            updatePatient(patients, count);
+            break;
+
+        case 5:
+            savePatients(patients, count);
+            break;
+
+        case 6:
+            cout << "\nGood Bye!\n";
+            break;
+
+        default:
+            cout << "Invalid choice.\n";
+        }
+
+
+    } while (choice != 6);
+
+
+
+    // Free dynamic memory
+    delete[] patients;
+
+
+    return 0;
+}
+
+// OUTPUT 
+
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 1
+
+Enter Patient ID: 1001
+Enter Name: ibro
+Enter Age: 12
+Enter Gender: M
+Enter Diagnosis: Heart attack
+
+Patient added successfully!
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 1
+
+Enter Patient ID: 1002
+Enter Name: Trevor Phillips
+Enter Age: 42
+Enter Gender: M
+Enter Diagnosis: Schizofrenia
+
+Patient added successfully!
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 2
+
+Patient Records
+====================
+ID: 1001
+Name: ibro
+Age: 12
+Gender: M
+Diagnosis: Heart attack
+--------------------
+ID: 1002
+Name: Trevor Phillips
+Age: 42
+Gender: M
+Diagnosis: Schizofrenia
+--------------------
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 2
+
+Patient Records
+====================
+ID: 1001
+Name: ibro
+Age: 12
+Gender: M
+Diagnosis: Heart attack
+--------------------
+ID: 1002
+Name: Trevor Phillips
+Age: 42
+Gender: M
+Diagnosis: Schizofrenia
+--------------------
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 3
+
+Enter patient ID to search: 1002
+
+Patient Found
+Name: Trevor Phillips
+Age: 42
+Diagnosis: Schizofrenia
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 4
+
+Enter patient ID to update: 1001
+Enter new diagnosis: dead
+Patient updated successfully!
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 5
+Patients saved to file.
+
+Hospital Patient System
+========================
+1. Add Patient
+2. Display Patients
+3. Search Patient
+4. Update Patient
+5. Save Patients
+6. Exit
+
+Enter choice: 6
+
+Good Bye!
+
+C:\Users\imomt\source\repos\CIS 25\x64\Debug\CIS 25.exe (process 54284) exited with code 0 (0x0).
+Press any key to close this window . . .
