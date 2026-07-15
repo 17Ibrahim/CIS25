@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// 1. Create a Struct
+struct Patient {
+    int id;
+    string name;
+    int age;
+};
+
+int main() {
+    // 2. Create a Patient Variable
+    Patient patient1;
+
+    // 4. Assign Values (using the regular variable)
+    patient1.id = 101;
+    patient1.name = "John";
+    patient1.age = 40;
+
+    // 3. Create a Pointer (storing the address using &)
+    Patient* p = &patient1;
+
+    // 5. Display Data Using Pointer (using ->)
+    cout << "ID: " << p->id << endl;
+    cout << "Name: " << p->name << endl;
+    cout << "Age: " << p->age << endl;
+
+    return 0;
+}
+
+// Output
+
+ID: 101
+Name: John
+Age: 40
+
+// Knowledge Check
+
+1. What is a pointer and how it's used: A pointer is simply a variable that stores a memory address rather than a standard value. In the code, the pointer p is created to hold the memory location of the patient1 struct, and then used to read and print the patient's details using the arrow (->) operator.
+
+2. What the & operator does: It acts as the "address-of" operator. It looks up exactly where the patient1 variable lives in the computer's memory so that location can be handed over and saved inside the pointer p.
